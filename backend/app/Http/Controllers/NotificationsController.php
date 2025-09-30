@@ -12,8 +12,22 @@ class NotificationsController extends Controller
         $userId = auth('api')->id();
         $items = Notification::query()
             ->where('user_id', $userId)
+            ->with(['task:id,is_completed'])
             ->orderByDesc('created_at')
-            ->paginate(15);
+            ->paginate(15)
+            ->through(function (Notification $n) {
+                return [
+                    'id' => $n->id,
+                    'user_id' => $n->user_id,
+                    'task_id' => $n->task_id,
+                    'type' => $n->type,
+                    'title' => $n->title,
+                    'message' => $n->message,
+                    'is_read' => $n->is_read,
+                    'created_at' => $n->created_at,
+                    'is_completed' => optional($n->task)->is_completed ?? false,
+                ];
+            });
         return response()->json($items);
     }
 

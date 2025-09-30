@@ -15,7 +15,8 @@ export const useAuthStore = defineStore('auth', {
     async register(payload) {
       this.loading = true; this.error = null;
       try {
-        const { data } = await api.post('/auth/register', payload);
+        const config = payload instanceof FormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : undefined;
+        const { data } = await api.post('/auth/register', payload, config);
         this.token = data.access_token;
         this.user = data.user;
         localStorage.setItem('access_token', this.token);

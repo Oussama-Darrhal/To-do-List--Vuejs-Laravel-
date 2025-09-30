@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -19,7 +20,14 @@ class AuthController extends Controller
             'phone_number' => ['nullable', 'string', 'max:50'],
             'address' => ['nullable', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8'],
+            'image' => ['nullable', 'image', 'max:2048'],
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $stored = $request->file('image')->store('avatars', 'public');
+            $imagePath = Storage::url($stored);
+        }
 
         $user = User::create([
             'name' => $data['full_name'],
@@ -27,10 +35,10 @@ class AuthController extends Controller
             'email' => $data['email'],
             'phone_number' => $data['phone_number'] ?? null,
             'address' => $data['address'] ?? null,
+            'image' => $imagePath,
             'password' => Hash::make($data['password']),
         ]);
         $token = JWTAuth::fromUser($user);
-        echo $token;
 
         return response()->json([
             'access_token' => $token,

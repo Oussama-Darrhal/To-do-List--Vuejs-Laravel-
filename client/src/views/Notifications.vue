@@ -12,6 +12,7 @@
             <th>Message</th>
             <th>Created</th>
             <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -20,7 +21,10 @@
             <td>{{ m.title }}</td>
             <td>{{ m.message || m.description || '' }}</td>
             <td>{{ new Date(m.created_at || m.at).toLocaleString() }}</td>
-            <td>{{ m.is_read ? 'Read' : 'Unread' }}</td>
+            <td>{{ m.is_completed ? 'Completed' : 'Open' }}</td>
+            <td>
+              <router-link v-if="m.task_id" :to="{ name: 'task-detail', params: { id: m.task_id } }">View</router-link>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -40,7 +40,17 @@ class TaskService
 
     public function updateTask(int $userId, int $taskId, array $data): ?Task
     {
-        return $this->tasks->updateForUser($userId, $taskId, $data);
+        $task = $this->tasks->updateForUser($userId, $taskId, $data);
+        if ($task) {
+            Notification::create([
+                'user_id' => $userId,
+                'task_id' => $task->id,
+                'type' => 'task.updated',
+                'title' => 'Task updated',
+                'message' => $task->title,
+            ]);
+        }
+        return $task;
     }
 
     public function deleteTask(int $userId, int $taskId): bool

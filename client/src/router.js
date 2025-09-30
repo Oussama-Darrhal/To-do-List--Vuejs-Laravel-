@@ -4,6 +4,7 @@ import { useAuthStore } from './stores/auth';
 const Login = () => import('./views/Login.vue');
 const Register = () => import('./views/Register.vue');
 const Tasks = () => import('./views/Tasks.vue');
+const TaskDetail = () => import('./views/TaskDetail.vue');
 const Notifications = () => import('./views/Notifications.vue');
 
 const router = createRouter({
@@ -13,6 +14,7 @@ const router = createRouter({
     { path: '/register', name: 'register', component: Register, meta: { guest: true } },
     { path: '/', redirect: '/tasks' },
     { path: '/tasks', name: 'tasks', component: Tasks, meta: { requiresAuth: true } },
+    { path: '/tasks/:id', name: 'task-detail', component: TaskDetail, meta: { requiresAuth: true } },
     { path: '/notifications', name: 'notifications', component: Notifications, meta: { requiresAuth: true } },
   ],
 });

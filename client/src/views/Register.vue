@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <h1>Register</h1>
-    <form @submit.prevent="onSubmit">
+    <form @submit.prevent="onSubmit" enctype="multipart/form-data">
       <input v-model="full_name" placeholder="Full name" required />
       <input v-model="email" type="email" placeholder="Email" required />
       <input v-model="phone_number" placeholder="Phone number" />
       <input v-model="address" placeholder="Address" />
-      <input v-model="image" placeholder="Image URL" />
+      <input type="file" @change="onFile" accept="image/*" />
       <input v-model="password" type="password" placeholder="Password" required />
       <button :disabled="auth.loading" type="submit">Create account</button>
       <p v-if="auth.error" class="error">{{ auth.error.message || auth.error }}</p>
@@ -26,11 +26,22 @@ const full_name = ref('')
 const email = ref('')
 const phone_number = ref('')
 const address = ref('')
-const image = ref('')
 const password = ref('')
+const file = ref(null)
+
+const onFile = (e) => {
+  file.value = e.target.files?.[0] || null
+}
 
 const onSubmit = async () => {
-  await auth.register({ full_name: full_name.value, email: email.value, phone_number: phone_number.value || undefined, address: address.value || undefined, image: image.value || undefined, password: password.value })
+  const fd = new FormData()
+  fd.append('full_name', full_name.value)
+  fd.append('email', email.value)
+  if (phone_number.value) fd.append('phone_number', phone_number.value)
+  if (address.value) fd.append('address', address.value)
+  fd.append('password', password.value)
+  if (file.value) fd.append('image', file.value)
+  await auth.register(fd)
   router.push({ name: 'tasks' })
 }
 </script>
