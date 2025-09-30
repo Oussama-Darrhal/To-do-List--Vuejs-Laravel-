@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\NotificationsController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -20,6 +21,11 @@ Route::middleware('auth:api')->prefix('tasks')->group(function () {
     Route::get('{id}', [TaskController::class, 'show']);
     Route::put('{id}', [TaskController::class, 'update']);
     Route::delete('{id}', [TaskController::class, 'destroy']);
+});
+
+Route::middleware('auth:api')->prefix('notifications')->group(function () {
+    Route::get('/', [NotificationsController::class, 'index']);
+    Route::post('{id}/read', [NotificationsController::class, 'markRead']);
 });
 
 

@@ -1,12 +1,38 @@
 <template>
   <div class="container">
     <h1>Notifications</h1>
-    <p v-if="!messages.length">No notifications yet.</p>
-    <ul>
-      <li v-for="(m, i) in messages" :key="i">
-        New task created: <strong>{{ m.title }}</strong>
-      </li>
-    </ul>
+    <p v-if="!messages.length && !notify.messages.length">No notifications yet.</p>
+    <section v-if="notify.messages.length">
+      <h3>All notifications</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Title</th>
+            <th>Message</th>
+            <th>Created</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(m, i) in notify.messages" :key="`store-${i}`">
+            <td>{{ m.type }}</td>
+            <td>{{ m.title }}</td>
+            <td>{{ m.message || m.description || '' }}</td>
+            <td>{{ new Date(m.created_at || m.at).toLocaleString() }}</td>
+            <td>{{ m.is_read ? 'Read' : 'Unread' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section v-if="messages.length">
+      <h3>Live session</h3>
+      <ul>
+        <li v-for="(m, i) in messages" :key="`live-${i}`">
+          New task created: <strong>{{ m.title }}</strong>
+        </li>
+      </ul>
+    </section>
   </div>
 </template>
 
@@ -15,15 +41,18 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
 import { useAuthStore } from '../stores/auth'
+import { useNotificationsStore } from '../stores/notifications'
 
 const messages = ref([])
 const auth = useAuthStore()
+const notify = useNotificationsStore()
 let echo
 
 onMounted(async () => {
   if (!auth.user) {
     try { await auth.fetchMe() } catch {}
   }
+  await notify.fetchAll()
   const token = localStorage.getItem('access_token')
 
   window.Pusher = Pusher
@@ -57,6 +86,7 @@ onMounted(async () => {
   const channelName = `private-users.${auth.user?.id}`
   echo.private(channelName).listen('.task.created', (e) => {
     messages.value.unshift(e)
+    notify.addMessage({ type: 'task.created', ...e })
   })
 })
 

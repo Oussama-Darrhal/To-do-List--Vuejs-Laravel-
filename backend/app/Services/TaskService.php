@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Events\TaskCreated;
 use App\Repositories\Contracts\TaskRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Models\Notification;
 
 class TaskService
 {
@@ -27,6 +28,13 @@ class TaskService
     {
         $task = $this->tasks->createForUser($userId, $data);
         TaskCreated::dispatch($task);
+        Notification::create([
+            'user_id' => $userId,
+            'task_id' => $task->id,
+            'type' => 'task.created',
+            'title' => 'Task created',
+            'message' => $task->title,
+        ]);
         return $task;
     }
 

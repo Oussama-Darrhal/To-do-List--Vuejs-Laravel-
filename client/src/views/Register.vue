@@ -6,6 +6,7 @@
       <input v-model="email" type="email" placeholder="Email" required />
       <input v-model="phone_number" placeholder="Phone number" />
       <input v-model="address" placeholder="Address" />
+      <input v-model="image" placeholder="Image URL" />
       <input v-model="password" type="password" placeholder="Password" required />
       <button :disabled="auth.loading" type="submit">Create account</button>
       <p v-if="auth.error" class="error">{{ auth.error.message || auth.error }}</p>
@@ -25,10 +26,11 @@ const full_name = ref('')
 const email = ref('')
 const phone_number = ref('')
 const address = ref('')
+const image = ref('')
 const password = ref('')
 
 const onSubmit = async () => {
-  await auth.register({ full_name: full_name.value, email: email.value, phone_number: phone_number.value || undefined, address: address.value || undefined, password: password.value })
+  await auth.register({ full_name: full_name.value, email: email.value, phone_number: phone_number.value || undefined, address: address.value || undefined, image: image.value || undefined, password: password.value })
   router.push({ name: 'tasks' })
 }
 </script>

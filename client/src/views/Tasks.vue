@@ -33,10 +33,12 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useTasksStore } from '../stores/tasks'
+import { useNotificationsStore } from '../stores/notifications'
 
 const auth = useAuthStore()
 const tasks = useTasksStore()
 const router = useRouter()
+const notify = useNotificationsStore()
 
 const title = ref('')
 const description = ref('')
@@ -49,6 +51,7 @@ onMounted(() => {
 const create = async () => {
   await tasks.create({ title: title.value, description: description.value || undefined, due_at: due_at.value ? new Date(due_at.value).toISOString() : undefined })
   title.value = ''; description.value=''; due_at.value=''
+  notify.pushToast({ title: 'Task created', description: 'Your task was created successfully.' })
 }
 
 const toggle = async (task) => {
