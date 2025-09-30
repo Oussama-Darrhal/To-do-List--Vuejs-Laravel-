@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Task;
+use App\Events\TaskCreated;
 use App\Repositories\Contracts\TaskRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -24,7 +25,9 @@ class TaskService
 
     public function createTask(int $userId, array $data): Task
     {
-        return $this->tasks->createForUser($userId, $data);
+        $task = $this->tasks->createForUser($userId, $data);
+        TaskCreated::dispatch($task);
+        return $task;
     }
 
     public function updateTask(int $userId, int $taskId, array $data): ?Task

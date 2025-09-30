@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -31,7 +32,13 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        return response()->json(['user' => $user], 201);
+        $token = JWTAuth::fromUser($user);
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'user' => $user,
+        ], 201);
     }
 
     public function login(Request $request)
@@ -41,17 +48,42 @@ class AuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        $user = User::where('email', $credentials['email'])->first();
-        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+        if (!$token = JWTAuth::attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        // JWT to be implemented later. Return stub for now.
         return response()->json([
-            'message' => 'Login successful. JWT issuance will be implemented.',
-            'user' => $user,
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'user' => JWTAuth::user(),
+        ]);
+    }
+
+    public function me()
+    {
+        return response()->json(JWTAuth::user());
+    }
+
+    public function logout()
+    {
+        $token = JWTAuth::getToken();
+        if ($token) {
+            JWTAuth::invalidate($token);
+        }
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    public function refresh()
+    {
+        $token = JWTAuth::refresh();
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => JWTAuth::factory()->getTTL() * 60,
+            'user' => JWTAuth::user(),
         ]);
     }
 }
