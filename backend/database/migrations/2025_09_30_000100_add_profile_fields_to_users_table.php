@@ -12,7 +12,6 @@ return new class extends Migration
             $table->string('full_name')->nullable()->after('id');
             $table->string('phone_number')->nullable()->after('email');
             $table->string('address')->nullable()->after('phone_number');
-            $table->string('image')->nullable()->after('address');
         });
     }
 

@@ -18,7 +18,6 @@ class AuthController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
             'phone_number' => ['nullable', 'string', 'max:50'],
             'address' => ['nullable', 'string', 'max:255'],
-            'image' => ['nullable', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8'],
         ]);
 
@@ -28,11 +27,11 @@ class AuthController extends Controller
             'email' => $data['email'],
             'phone_number' => $data['phone_number'] ?? null,
             'address' => $data['address'] ?? null,
-            'image' => $data['image'] ?? null,
             'password' => Hash::make($data['password']),
         ]);
-
         $token = JWTAuth::fromUser($user);
+        echo $token;
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
@@ -87,5 +86,3 @@ class AuthController extends Controller
         ]);
     }
 }
-
-
