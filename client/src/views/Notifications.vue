@@ -1,42 +1,62 @@
 <template>
-  <div class="container">
-    <h1>Notifications</h1>
-    <p v-if="!messages.length && !notify.messages.length">No notifications yet.</p>
-    <section v-if="notify.messages.length">
-      <h3>All notifications</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Title</th>
-            <th>Message</th>
-            <th>Created</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(m, i) in notify.messages" :key="`store-${i}`">
-            <td>{{ m.type }}</td>
-            <td>{{ m.title }}</td>
-            <td>{{ m.message || m.description || '' }}</td>
-            <td>{{ new Date(m.created_at || m.at).toLocaleString() }}</td>
-            <td>{{ m.is_completed ? 'Completed' : 'Open' }}</td>
-            <td>
-              <router-link v-if="m.task_id" :to="{ name: 'task-detail', params: { id: m.task_id } }">View</router-link>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-    <section v-if="messages.length">
-      <h3>Live session</h3>
-      <ul>
-        <li v-for="(m, i) in messages" :key="`live-${i}`">
-          New task created: <strong>{{ m.title }}</strong>
-        </li>
-      </ul>
-    </section>
+  <div class="grid gap-6">
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-semibold tracking-tight">Notifications</h1>
+    </div>
+
+    <Card>
+      <CardHeader>
+        <CardTitle>All notifications</CardTitle>
+        <CardDescription>Includes stored and live session items</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <template v-if="notify.messages.length">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Type</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead>Message</TableHead>
+                <TableHead>Created</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead class="text-right">Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <TableRow v-for="(m, i) in notify.messages" :key="`store-${i}`">
+                <TableCell class="font-medium">{{ m.type }}</TableCell>
+                <TableCell>{{ m.title }}</TableCell>
+                <TableCell class="text-muted-foreground">{{ m.message || m.description || '' }}</TableCell>
+                <TableCell>{{ new Date(m.created_at || m.at).toLocaleString() }}</TableCell>
+                <TableCell>
+                  <Badge :variant="m.is_completed ? 'secondary' : 'outline'">{{ m.is_completed ? 'Completed' : 'Open' }}</Badge>
+                </TableCell>
+                <TableCell class="text-right">
+                  <RouterLink v-if="m.task_id" :to="{ name: 'task-detail', params: { id: m.task_id } }">
+                    <Button size="sm" variant="secondary">View</Button>
+                  </RouterLink>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </template>
+        <p v-else class="text-sm text-muted-foreground">No notifications yet.</p>
+      </CardContent>
+    </Card>
+
+    <Card v-if="messages.length">
+      <CardHeader>
+        <CardTitle>Live session</CardTitle>
+        <CardDescription>Real-time updates during your session</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ul class="grid gap-2">
+          <li v-for="(m, i) in messages" :key="`live-${i}`" class="text-sm">
+            New task created: <span class="font-medium">{{ m.title }}</span>
+          </li>
+        </ul>
+      </CardContent>
+    </Card>
   </div>
 </template>
 
@@ -44,8 +64,13 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import Echo from 'laravel-echo'
 import Pusher from 'pusher-js'
-import { useAuthStore } from '../stores/auth'
-import { useNotificationsStore } from '../stores/notifications'
+import { useAuthStore } from '@/stores/auth'
+import { useNotificationsStore } from '@/stores/notifications'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import Button from '@/components/ui/button/Button.vue'
+import Badge from '@/components/ui/badge/Badge.vue'
+import { RouterLink } from 'vue-router'
 
 const messages = ref([])
 const auth = useAuthStore()
@@ -102,9 +127,6 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.container { max-width: 720px; margin: 2rem auto; }
-ul { list-style: none; padding: 0; display: grid; gap: .5rem; }
-li { padding: .5rem .75rem; border: 1px solid #eee; border-radius: 8px; }
 </style>
 
 

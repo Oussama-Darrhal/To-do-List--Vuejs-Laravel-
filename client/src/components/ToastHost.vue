@@ -1,31 +1,65 @@
 <template>
-  <div class="toast-host">
-    <div v-for="t in store.toasts" :key="t.id" class="toast" :class="t.variant">
-      <strong>{{ t.title }}</strong>
-      <p v-if="t.description">{{ t.description }}</p>
-      <button @click="store.removeToast(t.id)">×</button>
-    </div>
-  </div>
-  </template>
+  <Toaster
+    position="bottom-left"
+    :rich-colors="true"
+    :close-button="true"
+    :duration="3500"
+    :gap="10"
+    :visible-toasts="4"
+    :offset="{ bottom: 16, left: 16 }"
+  />
+  
+</template>
 
 <script setup>
+import { onMounted, watch } from 'vue'
 import { useNotificationsStore } from '../stores/notifications'
+import { Toaster } from '@/components/ui/sonner'
+import { toast } from 'vue-sonner'
+
 const store = useNotificationsStore()
+const shown = new Set()
+
+onMounted(() => {
+  store.toasts.forEach(t => {
+    if (!shown.has(t.id)) {
+      shown.add(t.id)
+      show(t)
+    }
+  })
+})
+
+watch(() => store.toasts.slice(), (list) => {
+  list.forEach(t => {
+    if (!shown.has(t.id)) {
+      shown.add(t.id)
+      show(t)
+    }
+  })
+})
+
+function show(t) {
+  const common = {
+    description: t.description,
+    class: undefined,
+    // ensure the CSS progress uses the same duration
+    style: { '--toast-duration': `${t.duration || 3500}ms` },
+  }
+  if (t.variant === 'error' || t.variant === 'destructive') {
+    return toast.error(t.title, { ...common, class: 'is-error' })
+  }
+  if (t.variant === 'success') {
+    return toast.success(t.title, { ...common, class: 'is-success' })
+  }
+  if (t.variant === 'warning') {
+    return toast.warning?.(t.title, { ...common, class: 'is-warning' }) || toast(t.title, { ...common, class: 'is-warning' })
+  }
+  // default info
+  return toast(t.title, { ...common, class: 'is-info' })
+}
 </script>
 
 <style scoped>
-.toast-host {
-  position: fixed; inset: 0; pointer-events: none;
-}
-.toast {
-  position: absolute; right: 1rem; top: 1rem; min-width: 260px;
-  background: #111827; color: #fff; border-radius: 10px; padding: .75rem 1rem;
-  box-shadow: 0 10px 30px rgba(0,0,0,.2); display: grid; gap: .25rem;
-  pointer-events: auto;
-}
-.toast.success { background: #065f46; }
-.toast.error { background: #7f1d1d; }
-.toast button { background: transparent; border: none; color: #fff; cursor: pointer; position: absolute; right: .5rem; top: .25rem; font-size: 1.1rem; }
 </style>
 
 
