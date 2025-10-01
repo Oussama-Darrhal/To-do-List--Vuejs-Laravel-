@@ -60,20 +60,18 @@ VITE_PUSHER_HOST=127.0.0.1
 VITE_PUSHER_PORT=6001
 VITE_PUSHER_TLS=false
 ```
-Configuration de Pusher
+#### Configuration de Pusher
 
-Pour activer les notifications en temps réel, vous devez créer un compte sur Pusher :
+Pour activer les notifications en temps réel, vous devez créer un compte sur **Pusher** :
 
-Rendez-vous sur https://pusher.com/
- et créez un compte.
+1. Rendez-vous sur [https://pusher.com/](https://pusher.com/) et créez un compte.
+2. Créez une nouvelle application.
+3. Dans les paramètres de l’application, copiez la **clé Pusher**.
+4. Remplacez `clé_pusher` dans le fichier `.env` par votre clé Pusher.
 
-Créez une nouvelle application.
+⚡ **Astuce** : Vérifiez que le `VITE_PUSHER_KEY` correspond exactement à celui fourni par Pusher.
 
-Dans les paramètres de l’application, copiez la clé Pusher.
 
-Remplacez clé_pusher dans le fichier .env par votre clé Pusher.
-
-⚡ Astuce : Vérifiez que le VITE_PUSHER_KEY correspond exactement à celui fourni par Pusher.
 
 
 
