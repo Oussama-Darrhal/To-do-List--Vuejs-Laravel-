@@ -45,3 +45,24 @@ Copier le fichier .env.example vers .env :
 ```bash
 cp .env.example .env
 ```
+Éditer le fichier .env pour configurer la base de données, l’URL de l’API et les clés Pusher/JWT :
+```bash
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nom_de_votre_base
+DB_USERNAME=utilisateur
+DB_PASSWORD=mot_de_passe
+
+VITE_API_BASE_URL=http://localhost:8000/api
+VITE_PUSHER_KEY=clé_pusher
+VITE_PUSHER_HOST=127.0.0.1
+VITE_PUSHER_PORT=6001
+VITE_PUSHER_TLS=false
+```
+
+
+
+
+
+
