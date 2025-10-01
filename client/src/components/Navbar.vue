@@ -6,9 +6,9 @@
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-primary">
             <path fill-rule="evenodd" d="M7.5 3A2.5 2.5 0 005 5.5v13A2.5 2.5 0 007.5 21h9a2.5 2.5 0 002.5-2.5v-13A2.5 2.5 0 0016.5 3h-9zM8 6.75a.75.75 0 000 1.5h8a.75.75 0 000-1.5H8zm0 3.5a.75.75 0 000 1.5h8a.75.75 0 000-1.5H8zm0 3.5a.75.75 0 000 1.5h5a.75.75 0 000-1.5H8z" clip-rule="evenodd" />
           </svg>
-          <span class="font-semibold tracking-tight">Todo</span>
+          <span class="font-semibold tracking-tight">Todo List App</span>
         </RouterLink>
-        <nav class="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
+        <nav v-if="auth.isAuthenticated" class="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
           <RouterLink to="/tasks" class="hover:text-foreground">Tasks</RouterLink>
           <RouterLink to="/notifications" class="hover:text-foreground">Notifications</RouterLink>
         </nav>
@@ -19,7 +19,7 @@
           <Sun v-if="theme.isDark" class="h-4 w-4" />
           <Moon v-else class="h-4 w-4" />
         </Button>
-        <DropdownMenu>
+        <DropdownMenu v-if="auth.isAuthenticated">
           <DropdownMenuTrigger as-child>
             <Button variant="ghost" class="h-8 w-8 rounded-full p-0">
               <Avatar class="h-8 w-8">
@@ -98,5 +98,3 @@ const toggleTheme = () => theme.toggle()
 
 <style scoped>
 </style>
-
-
