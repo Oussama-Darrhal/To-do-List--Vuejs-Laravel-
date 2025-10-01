@@ -76,6 +76,10 @@ Générer la clé de l’application :
 php artisan key:generate
 php artisan jwt:secret
 ```
+Lier le stockage pour les images :
+```bash
+php artisan storage:link
+```
 Lancer les migrations :
 ```bash
 php artisan migrate
@@ -85,4 +89,44 @@ Démarrer le backend Laravel :
 php artisan serve
 ```
 
+---
 
+### Étape 4 — Configuration du frontend (Vue.js)
+
+Installer les dépendances :
+```bash
+npm install
+```
+
+Lancer le serveur de développement frontend :
+```bash
+npm run dev
+```
+
+---
+
+### Étape 5 — Accéder à l’application
+
+Ouvrez votre navigateur et allez sur :
+```bash
+http://localhost:5173
+```
+
+---
+
+### Étape 5 — Tester l'application
+
+1. Inscrivez-vous via la page **Register**.  
+2. Connectez-vous via la page **Login**.  
+3. Créez une tâche.  
+4. Vérifiez que la tâche apparaît dans la liste.  
+5. Essayez de modifier, compléter ou supprimer une tâche.  
+6. Vérifiez les notifications en temps réel.
+
+
+
+# Auteur
+
+**Oussama DARRHAL**  
+[LinkedIn](https://www.linkedin.com/in/oussama-darrhal-6344ba250/)  
+Développeur Full Stack
