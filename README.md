@@ -23,7 +23,7 @@ Avant de commencer, assurez-vous d’avoir installé :
 - Node.js >= 16
 - NPM ou Yarn
 - MySQL ou une autre base de données compatible Laravel
-- Pusher (ou une alternative pour les notifications en temps réel)
+- Pusher (un compte actif et une clé API)
 
 ---
 
@@ -128,4 +128,5 @@ http://localhost:5173
 **Oussama DARRHAL**  
 [LinkedIn](https://www.linkedin.com/in/oussama-darrhal-6344ba250/)  
 Développeur Full Stack
+
 
