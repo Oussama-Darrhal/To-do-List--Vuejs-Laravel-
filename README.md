@@ -15,8 +15,6 @@ Le projet est organisé en plusieurs dossiers principaux pour une meilleure orga
 # 📌 Configuration de l'application
 Suivez ces étapes pour configurer et exécuter l'application To-Do List localement :
 
----
-
 ### Étape 1 — Prérequis
 
 Avant de commencer, assurez-vous d’avoir installé :
@@ -130,3 +128,4 @@ http://localhost:5173
 **Oussama DARRHAL**  
 [LinkedIn](https://www.linkedin.com/in/oussama-darrhal-6344ba250/)  
 Développeur Full Stack
+
