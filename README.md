@@ -71,9 +71,18 @@ Pour activer les notifications en temps réel, vous devez créer un compte sur *
 
 ⚡ **Astuce** : Vérifiez que le `VITE_PUSHER_KEY` correspond exactement à celui fourni par Pusher.
 
-
-
-
-
+Générer la clé de l’application :
+```bash
+php artisan key:generate
+php artisan jwt:secret
+```
+Lancer les migrations :
+```bash
+php artisan migrate
+```
+Démarrer le backend Laravel :
+```bash
+php artisan serve
+```
 
 
