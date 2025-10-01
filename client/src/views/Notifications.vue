@@ -6,14 +6,14 @@
     </div>
 
     <!-- Stored notifications (fetched from backend) -->
-    <Card>
+    <Card class="overflow-scroll">
       <CardHeader>
         <CardTitle>All notifications</CardTitle>
         <CardDescription>Includes stored and live session items</CardDescription>
       </CardHeader>
       <CardContent>
         <!-- Display table if messages exist -->
-        <template v-if="notify.messages.length">
+        <template  v-if="notify.messages.length">
           <Table>
             <TableHeader>
               <TableRow>
