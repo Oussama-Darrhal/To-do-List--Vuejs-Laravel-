@@ -35,9 +35,13 @@ git clone <url-du-dépôt>
 cd <dossier-du-dépôt>
 ```
 
+---
+
 ### Étape 3 — Configuration du backend (Laravel)
 ```bash
 composer install
 ```
-
-
+Copier le fichier .env.example vers .env :
+```bash
+cp .env.example .env
+```
