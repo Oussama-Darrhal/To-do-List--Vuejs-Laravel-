@@ -22,7 +22,7 @@ Suivez ces étapes pour configurer et exécuter l'application To-Do List localem
 
 Avant de commencer, assurez-vous d’avoir installé :
 
-- PHP >= 8.1
+- PHP >= 8.2
 - Composer
 - Node.js >= 16
 - NPM ou Yarn
@@ -161,4 +161,5 @@ http://localhost:5173
 **Oussama DARRHAL**  
 [LinkedIn](https://www.linkedin.com/in/oussama-darrhal-6344ba250/)  
 Développeur Full Stack
+
 
