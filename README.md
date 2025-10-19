@@ -147,7 +147,7 @@ http://localhost:5173
 
 ---
 
-### Étape 5 — Tester l'application
+### Étape 6 — Tester l'application
 
 1. Inscrivez-vous via la page **Register**.
 2. Connectez-vous via la page **Login**.
@@ -161,3 +161,4 @@ http://localhost:5173
 **Oussama DARRHAL**  
 [LinkedIn](https://www.linkedin.com/in/oussama-darrhal-6344ba250/)  
 Développeur Full Stack
+
